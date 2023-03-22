@@ -73,6 +73,7 @@ spec:
       {{- if .helmrelease.version }}
       version: {{ .helmrelease.version }}
       {{- end }}
+      reconcileStrategy: Revision
       sourceRef:
         {{- if .gitrepository }}
         kind: GitRepository
