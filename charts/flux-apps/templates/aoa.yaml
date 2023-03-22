@@ -78,7 +78,7 @@ spec:
       {{- end }}
       {{- if .helmrelease.valuesFiles }}
       valuesFiles:
-      {{ $.helmrelease.valuesFiles }}
+      {{ .helmrelease.valuesFiles }}
       {{- end }}
   {{- if .helmrelease.values }}
   values:
