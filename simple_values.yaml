@@ -25,5 +25,5 @@ apps:
     helmrelease:
       namespace: default
       chart: hello
-      values: |
-          {{ .Files.Get "values/helloolleh.yaml" | nindent 2}}
+      valuesFiles:
+       - values/hello5.yaml

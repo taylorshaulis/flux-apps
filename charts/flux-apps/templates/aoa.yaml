@@ -76,9 +76,13 @@ spec:
       {{- else }}
       interval: {{ $.Values.global.helmrelease.interval }}
       {{- end }}
-      {{- if .helmrelease.values }}
+      {{- if .helmrelease.valuesFiles }}
+      valuesFiles:
+      {{ $.helmrelease.valuesFiles }}
+      {{- end }}
+  {{- if .helmrelease.values }}
   values:
-    {{- tpl .helmrelease.values $ | nindent 4 }}
+  {{- tpl .helmrelease.values $ | nindent 4 }}
   {{- end }}
 ---
 {{- end }}
