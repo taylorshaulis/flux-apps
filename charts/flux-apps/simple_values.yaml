@@ -1,0 +1,7 @@
+apps:
+  - name: hello
+    helmrepository:
+      url: https://cloudecho.github.io/charts/
+    helmrelease:
+      namespace: default
+      chart: hello
