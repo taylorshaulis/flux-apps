@@ -19,11 +19,19 @@ apps:
       chart: hello
       values: |
           fullnameOverride: helloolleh
-  - name: hello4
+  # - name: hello4
+  #   helmrepository:
+  #     url: https://cloudecho.github.io/charts/
+  #   helmrelease:
+  #     namespace: default
+  #     chart: hello
+  #     valuesFiles:
+  #      - hello5.yaml
+  - name: hello5
     helmrepository:
       url: https://cloudecho.github.io/charts/
     helmrelease:
       namespace: default
       chart: hello
-      valuesFiles:
-       - hello5.yaml
+      values: |
+        {{ .Files.Get "values/hello5.yaml" }}
