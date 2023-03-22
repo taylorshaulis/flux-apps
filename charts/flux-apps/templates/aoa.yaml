@@ -1,0 +1,112 @@
+{{ range .Values.apps }}
+{{- if .gitrepository }}
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: GitRepository
+metadata:
+  name: {{ .name }}
+  namespace: {{ $.Values.global.fluxnamespace }}
+spec:
+  {{- if .gitrepository.interval }}
+  interval: {{ .gitrepository.interval }}
+  {{- else }}
+  interval: {{ $.Values.global.gitrepository.interval }}
+  {{- end }}
+  url:  {{ .gitrepository.url }}
+  ref:
+    {{- if .gitrepository.branch }}
+    branch: {{ .gitrepository.branch }}
+    {{- else }}
+    branch: {{ $.Values.global.gitrepository.branch }}
+    {{- end }}
+---
+{{- end }}
+{{- if .helmrepository }}
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: {{ .name }}
+  namespace: {{ $.Values.global.fluxnamespace }}
+spec:
+  {{- if .helmrepository.interval }}
+  interval: {{ .helmrepository.interval }}
+  {{- else }}
+  interval: {{ $.Values.global.helmrepository.interval }}
+  {{- end }}
+  url: {{ .helmrepository.url }}
+---
+{{- end }}
+{{- if .helmrelease }}
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: {{ .name }}
+  namespace: {{ $.Values.global.fluxnamespace }}
+spec:
+  targetNamespace: {{ .helmrelease.namespace }}
+  {{- if .helmrelease.interval }}
+  interval: {{ .helmrelease.interval }}
+  {{- else }}
+  interval: {{ $.Values.global.helmrelease.interval }}
+  {{- end }}
+  {{- if .helmrelease.install }}
+  install:
+    {{- if .helmrelease.install.createnamespace }}}
+    createNamespace: true
+    {{- end}}
+  {{- end }}
+  chart:
+    spec:
+      chart: {{ .chart }}
+      {{- if .helmrelease.version }}
+      version: {{ .helmrelease.version }}
+      {{- end }}
+      sourceRef:
+        {{- if .gitrepository }}
+        kind: GitRepository
+        name: {{ .name }}
+        {{- else if .helmrepository  }}
+        kind: HelmRepository
+        name: {{ .name }}
+        {{- else }}
+        kind: {{ .sourceRef.kind }}
+        name: {{ .sourceRef.name }}
+        {{- end}}
+      {{- if .helmrelease.interval }}
+      interval: {{ .helmrelease.interval }}
+      {{- else }}
+      interval: {{ $.Values.global.helmrelease.interval }}
+      {{- end }}
+    {{- if .helmrelease.values }}
+    values:
+      {{- tpl .helmrelease.values $ | nindent 6 }}
+    {{- end }}
+---
+{{- end }}
+{{- if .kustomization }}
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  namespace: {{ .name }}
+  name: {{ $.Values.global.fluxnamespace }}
+spec:
+  {{- if .kustomization.interval }}
+  interval: {{ .kustomization.interval }}
+  {{- else }}
+  interval: {{ $.Values.global.kustomization.interval }}
+  {{- end }}
+  prune: true
+  sourceRef:
+    {{- if .gitrepository }}
+    kind: GitRepository
+    name: {{ .name }}
+    {{- else if .helmrepository  }}
+    kind: HelmRepository
+    name: {{ .name }}
+    {{- else }}
+    kind: {{ .sourceRef.kind }}
+    name: {{ .sourceRef.name }}
+    {{- end}}
+  path: {{ .kustomization.path }}
+---
+{{- end }}
+{{ end }}
