@@ -37,17 +37,17 @@ spec:
 {{- end }}
 {{- if .helmrelease }}
 {{- range .helmrelease.valuesFiles }}
-test: {{ . | trimAll ".yaml" }}
+{{- $valuesname := . |  trimAll ".yaml" | replace "/" "-"}}
 {{- $valuesfile := . }}
-file: {{ $valuesfile }}
-{{ $.Files.Get $valuesfile }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ . | trimAll ".yaml" }}-values-configmap
+  name: {{ $valuesname }}-values-configmap
+  namespace: {{ $.Values.global.fluxnamespace }}
 data:
-  {{ $valuesfile }}: |-
+  values.yaml: |-
 {{ $.Files.Get $valuesfile | indent 4}}
+---
 {{- end }}
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
@@ -89,9 +89,13 @@ spec:
       {{- else }}
       interval: {{ $.Values.global.helmrelease.interval }}
       {{- end }}
-      {{- if .helmrelease.valuesFiless }}
-      valuesFiles:
-      {{ toYaml .helmrelease.valuesFiles }}
+      {{- if .helmrelease.valuesFiles }}
+      valuesFrom:
+      {{- range .helmrelease.valuesFiles }}
+      {{- $valuesname := . |  trimAll ".yaml" | replace "/" "-"}}
+      - kind: ConfigMap
+        name: {{ $valuesname }}-values-configmap
+      {{- end }}
       {{- end }}
   {{- if .helmrelease.values }}
   values:

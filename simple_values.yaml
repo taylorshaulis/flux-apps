@@ -19,14 +19,14 @@ apps:
       chart: hello
       values: |
           fullnameOverride: helloolleh
-  # - name: hello4
-  #   helmrepository:
-  #     url: https://cloudecho.github.io/charts/
-  #   helmrelease:
-  #     namespace: default
-  #     chart: hello
-  #     valuesFiles:
-  #      - hello5.yaml
+  - name: hello4
+    helmrepository:
+      url: https://cloudecho.github.io/charts/
+    helmrelease:
+      namespace: default
+      chart: hello
+      valuesFiles:
+        - values/hello5.yaml
   - name: hello5
     helmrepository:
       url: https://cloudecho.github.io/charts/
