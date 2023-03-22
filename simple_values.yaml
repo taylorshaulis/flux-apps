@@ -26,4 +26,4 @@ apps:
       namespace: default
       chart: hello
       valuesFiles:
-       - values/hello5.yaml
+       - hello5.yaml

@@ -19,5 +19,5 @@ apps:
         createnamespace: true
       namespace: helloolleh
       chart: hello
-      values: |
-        {{ .Files.Get "./charts/flux-apps/values/helloolleh.yaml" | nindent 2}}
+      # values: |
+      #   {{ .Files.Get "./charts/flux-apps/values/helloolleh.yaml" | nindent 2}}
