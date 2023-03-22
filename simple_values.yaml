@@ -19,3 +19,11 @@ apps:
       chart: hello
       values: |
           fullnameOverride: helloolleh
+  - name: hello4
+    helmrepository:
+      url: https://cloudecho.github.io/charts/
+    helmrelease:
+      namespace: default
+      chart: hello
+      values: |
+          {{ .Files.Get "values/helloolleh.yaml" | nindent 2}}
