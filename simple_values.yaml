@@ -26,7 +26,7 @@ apps:
       namespace: default
       chart: hello
       valuesFiles:
-        - values/hello5.yaml
+        - values/hello4.yaml
   - name: hello5
     helmrepository:
       url: https://cloudecho.github.io/charts/
