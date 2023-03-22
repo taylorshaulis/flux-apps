@@ -77,9 +77,9 @@ spec:
       interval: {{ $.Values.global.helmrelease.interval }}
       {{- end }}
       {{- if .helmrelease.values }}
-      values:
-        {{- tpl .helmrelease.values $ | nindent 8 }}
-      {{- end }}
+  values:
+    {{- tpl .helmrelease.values $ | nindent 4 }}
+  {{- end }}
 ---
 {{- end }}
 {{- if .kustomization }}
