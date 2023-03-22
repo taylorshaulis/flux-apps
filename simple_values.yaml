@@ -18,7 +18,7 @@ apps:
       namespace: default
       chart: hello
       values: |
-          fullnameOverride: helloolleh
+          fullnameOverride: hello3-inlinevalue
   - name: hello4
     helmrepository:
       url: https://cloudecho.github.io/charts/
