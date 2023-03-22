@@ -11,13 +11,6 @@ global:
     interval: 5m
 
 apps:
-  - name: echoserver
-    gitrepository:
-      url: https://github.com/taylorshaulis/chicken.git
-      branch: main
-    helmrelease:
-      namespace: default
-      chart: charts/echoserver
   - name: hello
     helmrepository:
       url: https://cloudecho.github.io/charts/
