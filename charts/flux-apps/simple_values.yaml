@@ -11,3 +11,13 @@ apps:
     helmrelease:
       namespace: default
       chart: hello
+  - name: helloolleh
+    helmrepository:
+      url: https://cloudecho.github.io/charts/
+    helmrelease:
+      install:
+        createnamespace: true
+      namespace: helloolleh
+      chart: hello
+      values: |
+        {{ .Files.Get "./charts/flux-apps/values/helloolleh.yaml" | nindent 2}}
