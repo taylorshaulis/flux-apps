@@ -90,14 +90,14 @@ spec:
       {{- else }}
       interval: {{ $.Values.global.helmrelease.interval }}
       {{- end }}
-      {{- if .helmrelease.valuesFiles }}
-      valuesFrom:
-      {{- range .helmrelease.valuesFiles }}
-      {{- $valuesname := . |  trimAll ".yaml" | replace "/" "-"}}
-      - kind: ConfigMap
-        name: {{ $valuesname }}-values-configmap
-      {{- end }}
-      {{- end }}
+  {{- if .helmrelease.valuesFiles }}
+  valuesFrom:
+  {{- range .helmrelease.valuesFiles }}
+  {{- $valuesname := . |  trimAll ".yaml" | replace "/" "-"}}
+  - kind: ConfigMap
+    name: {{ $valuesname }}-values-configmap
+  {{- end }}
+  {{- end }}
   {{- if .helmrelease.values }}
   values:
   {{- tpl .helmrelease.values $ | nindent 4 }}
