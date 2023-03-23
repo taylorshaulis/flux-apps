@@ -48,7 +48,13 @@ apps:
             apiVersion: apps/v1
             kind: Deployment
             metadata:
-              name: nginx2      
+              name: not-used
+            spec:
+              template:
+                spec:
+                  containers:
+                    - name: nginx
+                      image: nginx:1.21.0       
           target:
             kind: Deployment
             labelSelector: "app=nginx"
