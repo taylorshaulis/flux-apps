@@ -130,6 +130,26 @@ spec:
     name: {{ .sourceRef.name }}
     {{- end}}
   path: {{ .kustomization.path }}
+  {{- if .kustomization.patches }}
+  patches:
+  {{- range .kustomization.patches }}
+    - patch: |-
+{{ .patch | indent 8}}
+      target:
+        {{- if .target.kind }}
+        kind: {{ .target.kind }}
+        {{- end}}
+        {{- if .target.labelSelector }}
+        labelSelector: {{ .target.labelSelector | quote }}
+        {{- end}}
+        {{- if .target.name }}
+        name: {{ .target.name }}
+        {{- end}}
+        {{- if .target.namespace }}
+        namespace: {{ .target.namespace }}
+        {{- end}}
+  {{- end}}
+  {{- end}}
 ---
 {{- end }}
 {{ end }}

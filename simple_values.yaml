@@ -43,3 +43,19 @@ apps:
     kustomization:
       namespace: default
       path: kustomize_example
+  - name: nginx2
+    gitrepository:
+      url: https://github.com/taylorshaulis/flux-apps
+      branch: main
+    kustomization:
+      namespace: default
+      path: kustomize_example
+      patches:
+        - patch: |-
+            apiVersion: apps/v1
+            kind: Deployment
+            metadata:
+              name: nginx2      
+          target:
+            kind: Deployment
+            labelSelector: "app=nginx"
