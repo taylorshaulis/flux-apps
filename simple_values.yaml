@@ -6,11 +6,12 @@ apps:
       namespace: default
       chart: hello
   - name: hello2
-    helmrepository:
-      url: https://cloudecho.github.io/charts/
     helmrelease:
       namespace: default
       chart: hello
+      sourceRef:
+        kind: GitRepository
+        name: hello
   - name: hello3
     helmrepository:
       url: https://cloudecho.github.io/charts/
@@ -38,6 +39,7 @@ apps:
   - name: nginx1
     gitrepository:
       url: https://github.com/taylorshaulis/flux-apps
+      branch: main
     kustomization:
       namespace: default
       path: kustomize_example
