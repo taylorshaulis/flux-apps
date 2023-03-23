@@ -82,8 +82,8 @@ spec:
         kind: HelmRepository
         name: {{ .name }}
         {{- else }}
-        kind: {{ .sourceRef.kind }}
-        name: {{ .sourceRef.name }}
+        kind: {{ .helmrelease.sourceRef.kind }}
+        name: {{ .helmrelease.sourceRef.name }}
         {{- end}}
       {{- if .helmrelease.interval }}
       interval: {{ .helmrelease.interval }}
