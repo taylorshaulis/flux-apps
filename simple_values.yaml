@@ -36,25 +36,3 @@ apps:
       chart: hello
       values: |
         {{ .Files.Get "values/hello5.yaml" }}
-  - name: nginx2
-    gitrepository:
-      url: https://github.com/taylorshaulis/flux-apps
-      branch: main
-    kustomization:
-      namespace: default
-      path: kustomize_example
-      patches:
-        - patch: |-
-            apiVersion: apps/v1
-            kind: Deployment
-            metadata:
-              name: not-used
-            spec:
-              template:
-                spec:
-                  containers:
-                    - name: nginx
-                      image: nginx:1.21.0       
-          target:
-            kind: Deployment
-            labelSelector: "app=nginx"
