@@ -10,7 +10,7 @@ apps:
       namespace: default
       chart: hello
       sourceRef:
-        kind: GitRepository
+        kind: HelmRepository
         name: hello
   - name: hello3
     helmrepository:
