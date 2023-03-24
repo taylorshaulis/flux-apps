@@ -6,4 +6,4 @@ apps:
       namespace: default
       chart: hello
       values: |
-          fullnameOverride: hello3-example
+          fullnameOverride: hello3-overide-yolo
