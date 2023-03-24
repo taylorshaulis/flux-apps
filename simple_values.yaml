@@ -3,9 +3,3 @@ apps:
     helmrelease:
       values: |
         fullnameOverride: hello
-  hello2:
-    helmrepository:
-      url: https://cloudecho.github.io/charts/
-    helmrelease:
-      namespace: default
-      chart: hello
