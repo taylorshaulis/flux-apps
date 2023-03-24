@@ -1,7 +1,8 @@
 apps:
   hello:
     helmrelease:
-      namespace: hello
+      values: |
+        fullnameOverride: hello
   hello2:
     helmrepository:
       url: https://cloudecho.github.io/charts/
