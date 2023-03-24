@@ -5,3 +5,18 @@ apps:
     helmrelease:
       namespace: default
       chart: hello
+  - name: hello2
+    helmrelease:
+      namespace: default
+      chart: hello
+      sourceRef:
+        kind: HelmRepository
+        name: hello
+  - name: hello3
+    helmrepository:
+      url: https://cloudecho.github.io/charts/
+    helmrelease:
+      namespace: default
+      chart: hello
+      values: |
+          fullnameOverride: hello3-inlinevalue
