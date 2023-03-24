@@ -9,3 +9,11 @@ global:
     branch: master
   kustomization:
     interval: 1m
+
+apps:
+  hello:
+    helmrepository:
+      url: https://cloudecho.github.io/charts/
+    helmrelease:
+      namespace: default
+      chart: hello

@@ -1,9 +1,9 @@
-{{ range .Values.apps }}
+{{ range $name, $app := .Values.apps }}
 {{- if .gitrepository }}
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: GitRepository
 metadata:
-  name: {{ .name }}
+  name: {{ $name }}
   namespace: {{ $.Values.global.fluxnamespace }}
 spec:
   {{- if .gitrepository.interval }}
@@ -24,7 +24,7 @@ spec:
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: HelmRepository
 metadata:
-  name: {{ .name }}
+  name: {{ $name }}
   namespace: {{ $.Values.global.fluxnamespace }}
 spec:
   {{- if .helmrepository.interval }}
@@ -52,7 +52,7 @@ data:
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: {{ .name }}
+  name: {{ $name }}
   namespace: {{ $.Values.global.fluxnamespace }}
 spec:
   targetNamespace: {{ .helmrelease.namespace }}
@@ -108,7 +108,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization
 metadata:
-  name: {{ .name }}
+  name: {{ $name }}
   namespace: {{ $.Values.global.fluxnamespace }}
 spec:
   {{- if .kustomization.interval }}
