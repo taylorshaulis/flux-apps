@@ -19,4 +19,4 @@ apps:
       namespace: default
       chart: hello
       values: |
-          fullnameOverride: hello3-inlinevalue
+          fullnameOverride: hello3-example
