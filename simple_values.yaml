@@ -1,9 +1,0 @@
-apps:
-  - name: hello3
-    helmrepository:
-      url: https://cloudecho.github.io/charts/
-    helmrelease:
-      namespace: default
-      chart: hello
-      values: |
-          fullnameOverride: hello3-overide-yolo
