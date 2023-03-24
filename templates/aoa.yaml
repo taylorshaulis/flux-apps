@@ -77,10 +77,10 @@ spec:
       sourceRef:
         {{- if .gitrepository }}
         kind: GitRepository
-        name: {{ .name }}
+        name: {{ $name }}
         {{- else if .helmrepository  }}
         kind: HelmRepository
-        name: {{ .name }}
+        name: {{ $name }}
         {{- else }}
         kind: {{ .helmrelease.sourceRef.kind }}
         name: {{ .helmrelease.sourceRef.name }}
@@ -121,10 +121,10 @@ spec:
   sourceRef:
     {{- if .gitrepository }}
     kind: GitRepository
-    name: {{ .name }}
+    name: {{ $name }}
     {{- else if .helmrepository  }}
     kind: HelmRepository
-    name: {{ .name }}
+    name: {{ $name }}
     {{- else }}
     kind: {{ .sourceRef.kind }}
     name: {{ .sourceRef.name }}
