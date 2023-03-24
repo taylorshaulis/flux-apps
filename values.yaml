@@ -17,3 +17,34 @@ apps:
     helmrelease:
       namespace: default
       chart: hello
+  hello2:
+    helmrelease:
+      namespace: default
+      chart: hello
+      sourceRef:
+        kind: HelmRepository
+        name: hello
+  hello3:
+    helmrepository:
+      url: https://cloudecho.github.io/charts/
+    helmrelease:
+      namespace: default
+      chart: hello
+      values: |
+          fullnameOverride: hello3-inlinevalue
+  hello4:
+    helmrepository:
+      url: https://cloudecho.github.io/charts/
+    helmrelease:
+      namespace: default
+      chart: hello
+      valuesFiles:
+        - values/hello4.yaml
+  hello5:
+    helmrepository:
+      url: https://cloudecho.github.io/charts/
+    helmrelease:
+      namespace: default
+      chart: hello
+      values: |
+        {{ .Files.Get "values/hello5.yaml" }}
