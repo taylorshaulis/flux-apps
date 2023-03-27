@@ -1,0 +1,80 @@
+{{ range $name, $app := .Values.apps }}
+{{- if .helmrelease }}
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: {{ $name }}
+  namespace: {{ $.Values.global.fluxnamespace }}
+spec:
+  {{- if .helmrelease.targetNamespace }}
+  targetNamespace: {{ .helmrelease.targetNamespace }}
+  {{- else }}
+  targetNamespace: {{ .helmrelease.namespace }}
+  {{- end }}
+  {{- if .helmrelease.storageNamespace }}
+  storageNamespace: {{ .helmrelease.storageNamespace }}
+  {{- end }}
+  {{- if .helmrelease.maxHistory }}
+  maxHistory: {{ .helmrelease.maxHistory }}
+  {{- end }}
+  {{- if .helmrelease.serviceAccountName }}
+  serviceAccountName: {{ .helmrelease.serviceAccountName }}
+  {{- end }}
+  {{- if .helmrelease.interval }}
+  interval: {{ .helmrelease.interval }}
+  {{- else }}
+  interval: {{ $.Values.global.helmrelease.interval }}
+  {{- end }}
+  {{- if .helmrelease.install }}
+  install:
+    {{- if .helmrelease.install.createnamespace }}}
+    createNamespace: true
+    {{- end}}
+    {{- if .helmrelease.install.replace }}}
+    replace: {{ .helmrelease.install.replace }}
+    {{- end}}
+  {{- end }}
+  {{- if .helmrelease.suspend }}
+  suspend: {{ .helmrelease.suspend }}
+  {{- end }}
+  {{- if .helmrelease.releaseName }}
+  releaseName: {{ .helmrelease.releaseName }}
+  {{- end }}
+  chart:
+    spec:
+      chart: {{ .helmrelease.chart }}
+      {{- if .helmrelease.version }}
+      version: {{ .helmrelease.version }}
+      {{- end }}
+      reconcileStrategy: Revision
+      sourceRef:
+        {{- if .gitrepository }}
+        kind: GitRepository
+        name: {{ $name }}
+        {{- else if .helmrepository  }}
+        kind: HelmRepository
+        name: {{ $name }}
+        {{- else }}
+        kind: {{ .helmrelease.sourceRef.kind }}
+        name: {{ .helmrelease.sourceRef.name }}
+        {{- end}}
+      {{- if .helmrelease.interval }}
+      interval: {{ .helmrelease.interval }}
+      {{- else }}
+      interval: {{ $.Values.global.helmrelease.interval }}
+      {{- end }}
+  {{- if .helmrelease.valuesFiles }}
+  valuesFrom:
+  {{- range .helmrelease.valuesFiles }}
+  {{- $valuesname := . |  trimAll ".yaml" | replace "/" "-"}}
+  - kind: ConfigMap
+    name: {{ $valuesname }}-values-configmap
+  {{- end }}
+  {{- end }}
+  {{- if .helmrelease.values }}
+  values:
+  {{- tpl .helmrelease.values $ | nindent 4 }}
+  {{- end }}
+---
+{{- end }}
+{{ end }}

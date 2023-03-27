@@ -1,0 +1,17 @@
+{{ range $name, $app := .Values.apps }}
+{{- if .helmrelease }}
+{{- range .helmrelease.valuesFiles }}
+{{- $valuesname := . |  trimAll ".yaml" | replace "/" "-"}}
+{{- $valuesfile := . }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $valuesname }}-values-configmap
+  namespace: {{ $.Values.global.fluxnamespace }}
+data:
+  values.yaml: |-
+{{ $.Files.Get $valuesfile | indent 4}}
+---
+{{- end }}
+{{- end }}
+{{ end }}

@@ -1,0 +1,23 @@
+{{ range $name, $app := .Values.apps }}
+{{- if .gitrepository }}
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: GitRepository
+metadata:
+  name: {{ $name }}
+  namespace: {{ $.Values.global.fluxnamespace }}
+spec:
+  {{- if .gitrepository.interval }}
+  interval: {{ .gitrepository.interval }}
+  {{- else }}
+  interval: {{ $.Values.global.gitrepository.interval }}
+  {{- end }}
+  url:  {{ .gitrepository.url }}
+  ref:
+    {{- if .gitrepository.branch }}
+    branch: {{ .gitrepository.branch }}
+    {{- else }}
+    branch: {{ $.Values.global.gitrepository.branch }}
+    {{- end }}
+---
+{{- end }}
+{{ end }}

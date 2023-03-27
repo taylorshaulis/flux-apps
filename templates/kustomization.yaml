@@ -1,0 +1,50 @@
+{{ range $name, $app := .Values.apps }}
+{{- if .kustomization }}
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: {{ $name }}
+  namespace: {{ $.Values.global.fluxnamespace }}
+spec:
+  {{- if .kustomization.interval }}
+  interval: {{ .kustomization.interval }}
+  {{- else }}
+  interval: {{ $.Values.global.kustomization.interval }}
+  {{- end }}
+  prune: true
+  targetNamespace: {{ .kustomization.namespace }}
+  sourceRef:
+    {{- if .gitrepository }}
+    kind: GitRepository
+    name: {{ $name }}
+    {{- else if .helmrepository  }}
+    kind: HelmRepository
+    name: {{ $name }}
+    {{- else }}
+    kind: {{ .sourceRef.kind }}
+    name: {{ .sourceRef.name }}
+    {{- end}}
+  path: {{ .kustomization.path }}
+  {{- if .kustomization.patches }}
+  patches:
+  {{- range .kustomization.patches }}
+    - patch: |-
+{{ .patch | indent 8}}
+      target:
+        {{- if .target.kind }}
+        kind: {{ .target.kind }}
+        {{- end}}
+        {{- if .target.labelSelector }}
+        labelSelector: {{ .target.labelSelector | quote }}
+        {{- end}}
+        {{- if .target.name }}
+        name: {{ .target.name }}
+        {{- end}}
+        {{- if .target.namespace }}
+        namespace: {{ .target.namespace }}
+        {{- end}}
+  {{- end}}
+  {{- end}}
+---
+{{- end }}
+{{ end }}

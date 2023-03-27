@@ -1,0 +1,17 @@
+{{ range $name, $app := .Values.apps }}
+{{- if .helmrepository }}
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: {{ $name }}
+  namespace: {{ $.Values.global.fluxnamespace }}
+spec:
+  {{- if .helmrepository.interval }}
+  interval: {{ .helmrepository.interval }}
+  {{- else }}
+  interval: {{ $.Values.global.helmrepository.interval }}
+  {{- end }}
+  url: {{ .helmrepository.url }}
+---
+{{- end }}
+{{ end }}
