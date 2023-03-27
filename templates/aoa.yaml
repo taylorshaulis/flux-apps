@@ -55,7 +55,20 @@ metadata:
   name: {{ $name }}
   namespace: {{ $.Values.global.fluxnamespace }}
 spec:
+  {{- if .helmrelease.targetNamespace }}
+  targetNamespace: {{ .helmrelease.targetNamespace }}
+  {{- else }}
   targetNamespace: {{ .helmrelease.namespace }}
+  {{- end }}
+  {{- if .helmrelease.storageNamespace }}
+  storageNamespace: {{ .helmrelease.storageNamespace }}
+  {{- end }}
+  {{- if .helmrelease.maxHistory }}
+  maxHistory: {{ .helmrelease.maxHistory }}
+  {{- end }}
+  {{- if .helmrelease.serviceAccountName }}
+  serviceAccountName: {{ .helmrelease.serviceAccountName }}
+  {{- end }}
   {{- if .helmrelease.interval }}
   interval: {{ .helmrelease.interval }}
   {{- else }}
@@ -66,6 +79,15 @@ spec:
     {{- if .helmrelease.install.createnamespace }}}
     createNamespace: true
     {{- end}}
+    {{- if .helmrelease.install.replace }}}
+    replace: {{ .helmrelease.install.replace }}
+    {{- end}}
+  {{- end }}
+  {{- if .helmrelease.suspend }}
+  suspend: {{ .helmrelease.suspend }}
+  {{- end }}
+  {{- if .helmrelease.releaseName }}
+  releaseName: {{ .helmrelease.releaseName }}
   {{- end }}
   chart:
     spec:
