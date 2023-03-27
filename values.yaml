@@ -32,4 +32,4 @@ apps:
       namespace: default
       chart: ./
       valuesFiles:
-        - aoa_values.yaml
+        - aoavalues.yaml
