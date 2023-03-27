@@ -31,3 +31,5 @@ apps:
     helmrelease:
       namespace: default
       chart: ./
+      valuesFiles:
+        - aoa_values.yaml
