@@ -1,5 +1,1 @@
-apps:
-  hello:
-    helmrelease:
-      values: |
-        fullnameOverride: hello
+
