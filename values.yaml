@@ -24,3 +24,10 @@ apps:
       sourceRef:
         kind: HelmRepository
         name: hello
+  aoa:
+    gitrepository:
+      url: https://github.com/taylorshaulis/flux-aoa
+      branch: main
+    helmrelease:
+      namespace: default
+      chart: ./
